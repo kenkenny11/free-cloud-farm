@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1220">
+<title>FreeCloudFarm Node Agent</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1220;color:#eef3ff;font:15px system-ui,-apple-system,Segoe UI,sans-serif}main{max-width:720px;margin:auto;padding:18px}.card{background:#121b2e;border:1px solid #263451;border-radius:16px;padding:16px;margin:12px 0}h1{font-size:24px;margin:0 0 6px}.muted{color:#9eabc5}.row{display:grid;gap:10px;margin:10px 0}label{font-size:13px;color:#aebbd4}input,button{width:100%;padding:12px;border-radius:10px;border:1px solid #31415f;background:#0e1728;color:#fff;font:inherit}button{background:#2563eb;border:0;font-weight:700}.status{display:flex;align-items:center;gap:8px}.dot{width:10px;height:10px;border-radius:50%;background:#ef4444}.dot.on{background:#22c55e}.log{white-space:pre-wrap;background:#080d18;border-radius:10px;padding:10px;max-height:260px;overflow:auto;font-size:12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:520px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<div class="card">
+<h1>FreeCloudFarm Node Agent</h1>
+<div class="muted">Browser proof-of-concept agent. Keep this page open on the Android device.</div>
+</div>
+
+<div class="card">
+<div class="status"><span id="dot" class="dot"></span><b id="state">Disconnected</b></div>
+<div id="last" class="muted">Not connected</div>
+</div>
+
+<div class="card">
+<div class="row"><label>API URL</label><input id="api" value="https://free-cloud-farm.onrender.com"></div>
+<div class="grid">
+<div class="row"><label>Node ID</label><input id="nodeId" placeholder="phone-01"></div>
+<div class="row"><label>Node name</label><input id="name" placeholder="My Android Phone"></div>
+</div>
+<div class="row"><label>Node token</label><input id="token" type="password" placeholder="Your NODE_TOKEN"></div>
+<button id="connect">Register / Reconnect</button>
+</div>
+
+<div class="card">
+<b>Node telemetry</b>
+<div id="telemetry" class="muted" style="margin-top:8px">Waiting…</div>
+</div>
+
+<div class="card">
+<b>Task activity</b>
+<div id="tasks" class="muted" style="margin-top:8px">No tasks yet.</div>
+</div>
+
+<div class="card">
+<b>Log</b>
+<div id="log" class="log">Ready.</div>
+</div>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const saved=JSON.parse(localStorage.getItem("fcfAgent")||"{}");
+for(const k of ["api","nodeId","name","token"])if(saved[k])$(k).value=saved[k];
+let running=false, timer=null, lastTaskId=null;
+
+function log(x){$("log").textContent=new Date().toLocaleTimeString()+"  "+x+"\n"+$("log").textContent}
+function setState(on,msg){$("dot").className="dot"+(on?" on":"");$("state").textContent=on?"Online":"Disconnected";$("last").textContent=msg||""}
+
+function cfg(){return {api:$("api").value.trim().replace(/\/$/,""),nodeId:$("nodeId").value.trim(),name:$("name").value.trim()||"Android Node",token:$("token").value.trim()}}
+function headers(){return {"Content-Type":"application/json","X-Node-Token":cfg().token}}
+
+async function request(path,opts={}){const r=await fetch(cfg().api+path,{...opts,headers:{...headers(),...(opts.headers||{})}});let data={};try{data=await r.json()}catch{}if(!r.ok)throw new Error(data.error||("HTTP "+r.status));return data}
+
+async function battery(){
+try{if(navigator.getBattery){const b=await navigator.getBattery();return Math.round(b.level*100)}}catch{}
+return null
+}
+
+async function register(){
+const c=cfg();
+if(!c.api||!c.nodeId||!c.token){throw new Error("API URL, Node ID and token are required")}
+localStorage.setItem("fcfAgent",JSON.stringify(c));
+const data=await request("/api/node/register",{method:"POST",body:JSON.stringify({nodeId:c.nodeId,name:c.name,platform:"android-browser"})});
+log("Registered: "+(data.node?.nodeId||c.nodeId));
+setState(true,"Registered "+new Date().toLocaleTimeString());
+}
+
+async function heartbeat(){
+const b=await battery();
+const data=await request("/api/node/heartbeat",{method:"POST",body:JSON.stringify({nodeId:cfg().nodeId,battery:b,deviceModel:navigator.userAgent.slice(0,100)})});
+$("telemetry").textContent="Node: "+cfg().nodeId+" • Battery: "+(b==null?"n/a":b+"%")+" • Last heartbeat: "+new Date().toLocaleTimeString();
+setState(true,"Last heartbeat "+new Date().toLocaleTimeString());
+return data;
+}
+
+async function report(id,status,result){
+return request("/api/tasks/"+encodeURIComponent(id),{method:"POST",body:JSON.stringify({status,result})});
+}
+
+async function executeTask(t){
+$("tasks").innerHTML="<b>"+escapeHtml(t.action)+"</b> — "+escapeHtml(t.target||"")+"<br><span class='muted'>Running…</span>";
+try{
+if(t.action==="Open browser URL" && t.target){
+window.open(t.target,"_blank","noopener");
+await report(t.id,"completed","Opened URL in browser");
+}else if(t.action==="Open social app"){
+await report(t.id,"completed","Browser agent cannot launch native apps; use the native Android agent for this action.");
+}else{
+await report(t.id,"completed","Browser agent received task: "+t.action);
+}
+$("tasks").innerHTML="<b>"+escapeHtml(t.action)+"</b> — completed";
+log("Task "+t.id+" completed");
+}catch(e){await report(t.id,"failed",e.message);log("Task "+t.id+" failed: "+e.message)}
+}
+
+async function poll(){
+const data=await request("/api/tasks?nodeId="+encodeURIComponent(cfg().nodeId));
+const pending=(data.tasks||[]).filter(t=>t.status==="queued");
+if(pending.length){
+const t=pending[0];
+if(t.id!==lastTaskId){lastTaskId=t.id;await executeTask(t)}
+}
+}
+
+async function loop(){
+if(!running)return;
+try{await heartbeat();await poll()}catch(e){setState(false,"Connection error — retrying");log(e.message)}
+timer=setTimeout(loop,20000);
+}
+
+$("connect").onclick=async()=>{
+if(running){running=false;clearTimeout(timer);setState(false,"Stopped");$("connect").textContent="Register / Reconnect";return}
+try{
+$("connect").disabled=true;
+await register();
+running=true;
+$("connect").textContent="Stop Agent";
+await loop();
+}catch(e){setState(false,"Connection failed");log(e.message)}
+finally{$("connect").disabled=false}
+};
+
+function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
+</script>
+</body>
+</html>
