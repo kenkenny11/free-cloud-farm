@@ -54,11 +54,16 @@ class NodeService : Service() {
                 .put("battery", battery)
 
             val path = if (registered) "/api/node/heartbeat" else "/api/node/register"
-            val ok = post(api + path, token, payload.toString())
+            val response = postText(api + path, token, payload.toString())
+            val ok = response.isNotBlank()
             if (ok) {
                 registered = true
                 prefs.edit().putBoolean("registered", true).apply()
                 updateNotification("Online • Battery $battery%")
+                try {
+                    val taskArray = JSONObject(response).optJSONArray("tasks") ?: JSONArray()
+                    for (i in 0 until taskArray.length()) executeTask(api, token, taskArray.getJSONObject(i))
+                } catch (_: Exception) { }
                 pollTasks(api, nodeId, token)
             } else {
                 updateNotification("Waiting for server")
@@ -150,7 +155,7 @@ class NodeService : Service() {
         }
     }
 
-    private fun post(urlString: String, token: String, body: String): Boolean {
+    private fun postText(urlString: String, token: String, body: String): String {
         return try {
             val connection = URL(urlString).openConnection() as HttpURLConnection
             connection.requestMethod = "POST"
@@ -161,12 +166,17 @@ class NodeService : Service() {
             connection.setRequestProperty("X-Node-Token", token)
             connection.outputStream.use { it.write(body.toByteArray()) }
             val code = connection.responseCode
+            val stream = if (code in 200..299) connection.inputStream else connection.errorStream
+            val text = stream?.bufferedReader()?.use { it.readText() } ?: ""
             connection.disconnect()
-            code in 200..299
+            if (code in 200..299) text else ""
         } catch (_: Exception) {
-            false
+            ""
         }
     }
+
+    private fun post(urlString: String, token: String, body: String): Boolean =
+        postText(urlString, token, body).isNotBlank()
 
     private fun batteryPercent(): Int {
         val manager = getSystemService(BATTERY_SERVICE) as BatteryManager
