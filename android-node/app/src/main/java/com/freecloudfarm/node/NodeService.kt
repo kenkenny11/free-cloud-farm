@@ -66,7 +66,12 @@ class NodeService : Service() {
                 } catch (_: Exception) { }
                 pollTasks(api, nodeId, token)
             } else {
-                updateNotification("Waiting for server")
+                // The Render service can restart and lose its in-memory node registry.
+                // If that happens, a saved "registered" flag would make us retry
+                // heartbeat forever. Clear it so the next loop registers the node again.
+                registered = false
+                prefs.edit().putBoolean("registered", false).apply()
+                updateNotification("Re-registering with server")
             }
             delay(20_000)
         }
