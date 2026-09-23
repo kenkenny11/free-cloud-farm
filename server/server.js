@@ -1,11 +1,26 @@
 import http from "node:http";
 import crypto from "node:crypto";
+import fs from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const PORT = Number(process.env.PORT || 10000);
 const NODE_TOKEN = String(process.env.NODE_TOKEN || "").trim();
 const HEARTBEAT_TIMEOUT_MS = 90_000;
 const nodes = new Map();
 const tasks = [];
+const ROOT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+
+async function serveFile(res, filePath, contentType) {
+  try {
+    const data = await fs.readFile(filePath);
+    res.writeHead(200, { ...headers, "content-type": contentType });
+    res.end(data);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 const headers = {
   "content-type": "application/json; charset=utf-8",
@@ -64,6 +79,16 @@ const server = http.createServer(async (req, res) => {
 
   const url = new URL(req.url || "/", "http://localhost");
   refreshStatuses();
+
+  if (url.pathname === "/" && req.method === "GET") {
+    if (await serveFile(res, path.join(ROOT_DIR, "index.html"), "text/html; charset=utf-8")) return;
+    return json(res, 404, { ok: false, error: "Dashboard not found" });
+  }
+
+  if (url.pathname === "/node-agent/agent.html" && req.method === "GET") {
+    if (await serveFile(res, path.join(ROOT_DIR, "node-agent", "agent.html"), "text/html; charset=utf-8")) return;
+    return json(res, 404, { ok: false, error: "Node Agent not found" });
+  }
 
   if (url.pathname === "/health" && req.method === "GET") {
     return json(res, 200, {
