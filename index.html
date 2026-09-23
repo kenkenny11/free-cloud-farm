@@ -5,51 +5,40 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b1220">
 <title>FreeCloudFarm</title>
-<link rel="manifest" href="manifest.webmanifest">
 <style>
 :root{--bg:#08111f;--panel:#101b2d;--panel2:#14233a;--text:#eef5ff;--muted:#91a3bd;--line:#223653;--accent:#4da3ff;--good:#32d583;--warn:#ffbd4a;--bad:#ff6678}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#08111f,#0d1727);color:var(--text);font:14px system-ui,-apple-system,Segoe UI,sans-serif}.app{max-width:1200px;margin:auto;padding:16px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.brand{display:flex;align-items:center;gap:10px}.logo{width:40px;height:40px;border-radius:12px;background:var(--accent);display:grid;place-items:center;color:#07111f;font-weight:900}.brand b{font-size:18px}.brand small{display:block;color:var(--muted)}
-.nav{display:flex;gap:7px;overflow:auto;margin-bottom:16px}.nav button{border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:10px 14px;border-radius:10px;white-space:nowrap}.nav button.active{background:var(--accent);color:#06101d;border-color:var(--accent);font-weight:700}
-.page.hidden{display:none}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:rgba(16,27,45,.94);border:1px solid var(--line);border-radius:14px;padding:15px}.stat b{font-size:25px}.muted{color:var(--muted)}.good{color:var(--good)}.warn{color:var(--warn)}
-.section{margin-top:16px}.section h2,.card h2{font-size:16px;margin:0 0 10px}.form{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field label{display:block;color:var(--muted);margin-bottom:5px}.field input,.field select{width:100%;background:#0b1626;border:1px solid var(--line);color:var(--text);padding:10px;border-radius:9px}.full{grid-column:1/-1}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:9px 12px;border-radius:9px}.primary{background:var(--accent);border-color:var(--accent);color:#06101d;font-weight:700}
-.notice{padding:12px;border:1px solid #31507a;background:#10243d;border-radius:10px;margin-bottom:12px}.status{display:inline-flex;padding:4px 8px;border-radius:20px;background:#2d2025;color:#ff9aa7;font-size:11px}.status.online{background:#103d2a;color:#71e6aa}.phonegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.phone{min-height:230px}.phonebox{height:88px;border:1px dashed #385271;border-radius:10px;display:grid;place-items:center;color:var(--muted);margin:12px 0}.table{width:100%;border-collapse:collapse}.table th,.table td{text-align:left;padding:10px 7px;border-bottom:1px solid var(--line)}.empty{text-align:center;padding:30px;color:var(--muted)}.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#13243b;border:1px solid var(--line);padding:10px 14px;border-radius:10px;display:none;z-index:10}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#08111f,#0d1727);color:var(--text);font:14px system-ui,-apple-system,Segoe UI,sans-serif}.app{max-width:1200px;margin:auto;padding:16px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.brand{display:flex;align-items:center;gap:10px}.logo{width:40px;height:40px;border-radius:12px;background:var(--accent);display:grid;place-items:center;color:#07111f;font-weight:900}.brand b{font-size:18px}.brand small{display:block;color:var(--muted)}.nav{display:flex;gap:7px;overflow:auto;margin-bottom:16px}.nav button{border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:10px 14px;border-radius:10px;white-space:nowrap}.nav button.active{background:var(--accent);color:#06101d;border-color:var(--accent);font-weight:700}.page.hidden{display:none}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:rgba(16,27,45,.94);border:1px solid var(--line);border-radius:14px;padding:15px}.stat b{font-size:25px}.muted{color:var(--muted)}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}.section{margin-top:16px}.section h2,.card h2{font-size:16px;margin:0 0 10px}.form{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field label{display:block;color:var(--muted);margin-bottom:5px}.field input,.field select{width:100%;background:#0b1626;border:1px solid var(--line);color:var(--text);padding:10px;border-radius:9px}.full{grid-column:1/-1}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:9px 12px;border-radius:9px}.primary{background:var(--accent);border-color:var(--accent);color:#06101d;font-weight:700}.notice{padding:12px;border:1px solid #31507a;background:#10243d;border-radius:10px;margin-bottom:12px}.status{display:inline-flex;padding:4px 8px;border-radius:20px;background:#2d2025;color:#ff9aa7;font-size:11px}.status.online{background:#103d2a;color:#71e6aa}.phonegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.phone{min-height:230px}.phonebox{height:88px;border:1px dashed #385271;border-radius:10px;display:grid;place-items:center;color:var(--muted);margin:12px 0}.table{width:100%;border-collapse:collapse}.table th,.table td{text-align:left;padding:10px 7px;border-bottom:1px solid var(--line)}.empty{text-align:center;padding:30px;color:var(--muted)}.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#13243b;border:1px solid var(--line);padding:10px 14px;border-radius:10px;display:none;z-index:10}
 @media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}.phonegrid{grid-template-columns:1fr 1fr}.form{grid-template-columns:1fr}}@media(max-width:520px){.app{padding:10px}.grid,.phonegrid{grid-template-columns:1fr}.top{align-items:flex-start}.brand small{font-size:11px}}
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="brand"><div class="logo">FC</div><div><b>FreeCloudFarm</b><small>Mobile cloud-device control panel</small></div></div><button class="btn" onclick="rotateToken()">Token help</button></header>
-<div class="notice">Backend: <b id="connection">Checking...</b> · API: <span id="apiLabel"></span></div>
+<header class="top"><div class="brand"><div class="logo">FC</div><div><b>FreeCloudFarm</b><small>Mobile cloud-device control panel</small></div></div><button class="btn" onclick="tokenHelp()">Token help</button></header>
+<div class="notice">Backend: <b id="connection">Checking...</b> · API: <span id="apiLabel"></span> · <span id="syncLabel">Syncing...</span></div>
 <nav class="nav"><button class="active" data-page="dashboard">Dashboard</button><button data-page="devices">Devices</button><button data-page="tasks">Tasks</button><button data-page="accounts">Accounts</button><button data-page="settings">Settings</button></nav>
 
 <section id="dashboard" class="page">
 <div class="grid"><div class="card stat"><span class="muted">Devices</span><br><b id="sDevices">0</b></div><div class="card stat"><span class="muted">Online</span><br><b class="good" id="sOnline">0</b></div><div class="card stat"><span class="muted">Tasks</span><br><b id="sTasks">0</b></div><div class="card stat"><span class="muted">API</span><br><b id="sApi">OFF</b></div></div>
-<div class="card section"><h2>Quick actions</h2><div class="actions"><button class="btn primary" onclick="showPage('devices')">Connect device</button><button class="btn" onclick="showPage('tasks')">Create task</button><button class="btn" onclick="refreshAll()">Refresh nodes</button></div></div>
-<div class="card section"><h2>Architecture</h2><p class="muted">The dashboard controls registered Android nodes. A real Android phone, emulator, or other Android runtime still provides the device itself. The API does not create Android VMs.</p></div>
+<div class="card section"><h2>Quick actions</h2><div class="actions"><button class="btn primary" onclick="showPage('devices')">Connect device</button><button class="btn" onclick="showPage('tasks')">Create task</button><button class="btn" onclick="refreshAll()">Refresh</button></div></div>
+<div class="card section"><h2>Architecture</h2><p class="muted">The dashboard controls registered Android nodes. A real Android phone, emulator, or other Android runtime provides the device itself.</p></div>
 </section>
 
 <section id="devices" class="page hidden">
-<div class="card">
-<h2>Connect Android node</h2>
-<p class="muted">The phone registers itself. Open the Node Agent on the Android device, enter the same API URL and NODE_TOKEN, then tap Register / Reconnect.</p>
+<div class="card"><h2>Connect Android node</h2><p class="muted">The installed Android Node registers itself using the API URL and NODE_TOKEN.</p>
 <div class="notice"><b>Node API:</b> POST /api/node/register<br><b>Heartbeat:</b> every 20 seconds<br><b>Offline:</b> after 90 seconds without a heartbeat</div>
-<div class="actions"><button class="btn primary" onclick="openAgent()">Open Node Agent</button><button class="btn" onclick="loadNodes()">Refresh devices</button></div>
-</div>
+<div class="actions"><button class="btn primary" onclick="openAgent()">Open browser Node Agent</button><button class="btn" onclick="refreshAll()">Refresh devices</button></div></div>
 <div class="section phonegrid" id="phoneList"></div>
 </section>
 
 <section id="tasks" class="page hidden">
-<div class="card"><h2>Task queue</h2><div class="form"><div class="field"><label>Device</label><select id="taskDevice"></select></div><div class="field"><label>Action</label><select id="taskAction"><option>Open social app</option><option>Open browser URL</option><option>Capture screenshot</option><option>Pause task</option></select></div><div class="field full"><label>Target URL (optional)</label><input id="taskUrl" placeholder="https://example.com"></div><div class="full"><button class="btn primary" onclick="createTask()">Queue task</button></div></div></div>
-<div class="card section"><table class="table"><thead><tr><th>Device</th><th>Action</th><th>Status</th></tr></thead><tbody id="taskList"></tbody></table></div>
+<div class="card"><h2>Task queue</h2><div class="form"><div class="field"><label>Device</label><select id="taskDevice"></select></div><div class="field"><label>Action</label><select id="taskAction"><option>Open social app</option><option>Open browser URL</option><option>Capture screenshot</option><option>Pause task</option></select></div><div class="field full"><label>Target URL / app name</label><input id="taskUrl" placeholder="https://example.com"></div><div class="full"><button class="btn primary" onclick="createTask()">Queue task</button></div></div></div>
+<div class="card section"><div class="actions" style="justify-content:space-between"><h2 style="margin:0">Live task status</h2><button class="btn" onclick="loadTasks()">Refresh tasks</button></div><table class="table"><thead><tr><th>Device</th><th>Action</th><th>Status</th><th>Result</th></tr></thead><tbody id="taskList"></tbody></table></div>
 </section>
 
 <section id="accounts" class="page hidden"><div class="card"><h2>Social accounts</h2><p class="muted">Labels are stored locally. Actual account connections should use official platform APIs/OAuth or user-approved automation.</p><div class="form"><div class="field"><label>Platform</label><select id="acctPlatform"><option>Facebook</option><option>Instagram</option><option>YouTube</option><option>TikTok</option><option>X</option></select></div><div class="field"><label>Account label</label><input id="acctName" placeholder="My page"></div><div class="full"><button class="btn primary" onclick="addAccount()">Add label</button></div></div></div><div class="card section"><table class="table"><thead><tr><th>Platform</th><th>Account</th></tr></thead><tbody id="accountList"></tbody></table></div></section>
 
-<section id="settings" class="page hidden">
-<div class="card"><h2>Backend connection</h2><div class="form"><div class="field full"><label>API URL</label><input id="apiUrl" placeholder="https://free-cloud-farm.onrender.com"></div><div class="field full"><label>NODE_TOKEN</label><input id="tokenBox" type="password" placeholder="Paste the NODE_TOKEN from Render"></div><div class="full actions"><button class="btn primary" onclick="saveSettings()">Save & test</button><button class="btn" onclick="testApi()">Test API</button></div></div><p class="muted">The dashboard stores the token only in this browser's local storage. Keep it private. The same token is required by Android nodes.</p></div>
-<div class="card section"><h2>Node API</h2><p class="muted">Register: POST /api/node/register · Heartbeat: POST /api/node/heartbeat · Offline: POST /api/node/offline · List: GET /api/nodes</p></div>
-</section>
+<section id="settings" class="page hidden"><div class="card"><h2>Backend connection</h2><div class="form"><div class="field full"><label>API URL</label><input id="apiUrl" placeholder="https://free-cloud-farm.onrender.com"></div><div class="field full"><label>NODE_TOKEN</label><input id="tokenBox" type="password" placeholder="Paste the NODE_TOKEN from Render"></div><div class="full actions"><button class="btn primary" onclick="saveSettings()">Save & test</button><button class="btn" onclick="testApi()">Test API</button></div></div><p class="muted">The dashboard stores the token only in this browser's local storage. Keep it private.</p></div>
+<div class="card section"><h2>Node API</h2><p class="muted">Register: POST /api/node/register · Heartbeat: POST /api/node/heartbeat · Tasks: GET/POST /api/tasks</p></div></section>
 </div>
 <div id="toast" class="toast"></div>
 
@@ -57,38 +46,43 @@
 const KEY="freecloudfarm",DEFAULT_API="https://free-cloud-farm.onrender.com";
 let state=JSON.parse(localStorage.getItem(KEY)||"null")||{api:DEFAULT_API,token:"",devices:[],tasks:[],accounts:[]};
 const save=()=>localStorage.setItem(KEY,JSON.stringify(state));
-const toast=m=>{let t=document.getElementById("toast");t.textContent=m;t.style.display="block";setTimeout(()=>t.style.display="none",2400)};
+const toast=m=>{let t=document.getElementById("toast");t.textContent=m;t.style.display="block";clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.style.display="none",2400)};
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-function showPage(id){document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));document.getElementById(id).classList.remove("hidden");document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.page===id));render()}
+function showPage(id){document.querySelectorAll(".page").forEach(x=>x.classList.add("hidden"));document.getElementById(id).classList.remove("hidden");document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.page===id));render();if(id==="tasks")loadTasks()}
 document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>showPage(b.dataset.page));
 function apiBase(){return(state.api||DEFAULT_API).replace(/\/$/,"")}
 function headers(){return state.token?{"Content-Type":"application/json","X-Node-Token":state.token}:{"Content-Type":"application/json"}}
 async function testApi(){
 document.getElementById("connection").textContent="Testing...";
-try{let r=await fetch(apiBase()+"/health",{cache:"no-store"});if(!r.ok)throw Error();let j=await r.json();document.getElementById("connection").textContent=j.ok?"ONLINE":"ERROR";document.getElementById("sApi").textContent=j.ok?"ON":"OFF";await loadNodes()}catch(e){document.getElementById("connection").textContent="OFFLINE";document.getElementById("sApi").textContent="OFF"}
-}
+try{let r=await fetch(apiBase()+"/health",{cache:"no-store"});if(!r.ok)throw Error();let j=await r.json();document.getElementById("connection").textContent=j.ok?"ONLINE":"ERROR";document.getElementById("sApi").textContent=j.ok?"ON":"OFF";await Promise.all([loadNodes(),loadTasks()])}catch(e){document.getElementById("connection").textContent="OFFLINE";document.getElementById("sApi").textContent="OFF";document.getElementById("syncLabel").textContent="Sync failed"}}
 async function loadNodes(){
-try{let r=await fetch(apiBase()+"/api/nodes",{cache:"no-store"});if(!r.ok)throw Error();let j=await r.json();state.devices=j.nodes||[];state.devices=state.devices.map(n=>({...n,online:n.status==="online"}));save();render();return state.devices}catch(e){return[]}
-}
+try{let r=await fetch(apiBase()+"/api/nodes",{cache:"no-store"});if(!r.ok)throw Error();let j=await r.json();state.devices=(j.nodes||[]).map(n=>({...n,online:n.status==="online"}));save();render();return state.devices}catch(e){return[]}}
+async function loadTasks(){
+if(!state.token)return[];
+try{
+let r=await fetch(apiBase()+"/api/tasks",{headers:headers(),cache:"no-store"});if(!r.ok)throw Error();
+let j=await r.json();state.tasks=j.tasks||[];save();document.getElementById("syncLabel").textContent="Synced "+new Date().toLocaleTimeString();render();return state.tasks
+}catch(e){document.getElementById("syncLabel").textContent="Task sync failed";return[]}}
 async function createTask(){
 let nodeId=document.getElementById("taskDevice").value;if(!nodeId){toast("Connect a device first");return}
 if(!state.token){toast("Add NODE_TOKEN in Settings first");showPage("settings");return}
-try{let r=await fetch(apiBase()+"/api/tasks",{method:"POST",headers:headers(),body:JSON.stringify({nodeId,action:document.getElementById("taskAction").value,target:document.getElementById("taskUrl").value.trim()})});let j=await r.json();if(!r.ok)throw Error(j.error||"Task failed");state.tasks.unshift(j.task);save();document.getElementById("taskUrl").value="";toast("Task queued");render()}catch(e){toast(e.message)}
-}
+try{let r=await fetch(apiBase()+"/api/tasks",{method:"POST",headers:headers(),body:JSON.stringify({nodeId,action:document.getElementById("taskAction").value,target:document.getElementById("taskUrl").value.trim()})});let j=await r.json();if(!r.ok)throw Error(j.error||"Task failed");document.getElementById("taskUrl").value="";toast("Task queued");await loadTasks()}catch(e){toast(e.message)}}
 function addAccount(){let n=document.getElementById("acctName").value.trim();if(!n)return;state.accounts.push({platform:document.getElementById("acctPlatform").value,name:n});document.getElementById("acctName").value="";save();render()}
-function rotateToken(){showPage("settings");toast("Use the NODE_TOKEN stored in Render. Do not generate a different browser-only token.")}
+function tokenHelp(){showPage("settings");toast("Use the NODE_TOKEN stored in Render.")}
 function openAgent(){window.open("node-agent/agent.html","_blank","noopener")}
 function saveSettings(){state.api=document.getElementById("apiUrl").value.trim()||DEFAULT_API;state.token=document.getElementById("tokenBox").value.trim();save();testApi()}
-async function refreshAll(){await testApi();toast("Refreshed")}
+async function refreshAll(){await Promise.all([testApi(),loadTasks()]);toast("Refreshed")}
+function taskResult(t){if(!t.result)return "—";if(typeof t.result==="string")return esc(t.result);if(t.result.message)return esc(t.result.message);return esc(JSON.stringify(t.result))}
+function statusClass(s){return s==="completed"?"good":(s==="failed"?"bad":(s==="running"?"warn":""))}
 function render(){
 document.getElementById("apiLabel").textContent=apiBase();document.getElementById("tokenBox").value=state.token;document.getElementById("apiUrl").value=state.api||DEFAULT_API;
 document.getElementById("sDevices").textContent=state.devices.length;document.getElementById("sOnline").textContent=state.devices.filter(x=>x.online).length;document.getElementById("sTasks").textContent=state.tasks.length;
-document.getElementById("phoneList").innerHTML=state.devices.length?state.devices.map(d=>`<div class="card phone"><div class="top"><b>${esc(d.name)}</b><span class="status ${d.online?"online":""}">${d.online?"ONLINE":"OFFLINE"}</span></div><div class="muted">${esc(d.platform)} ${d.deviceModel?"• "+esc(d.deviceModel):""}</div><div class="phonebox">${d.online?"Node connected":"Waiting for heartbeat"}</div><div class="muted">Battery: ${d.battery==null?"—":esc(d.battery)+"%"}</div><small class="muted">Last seen: ${d.lastSeen?esc(new Date(d.lastSeen).toLocaleString()):"—"}</small></div>`).join(""):'<div class="card empty">No devices registered. Open the Node Agent on your Android phone.</div>';
+document.getElementById("phoneList").innerHTML=state.devices.length?state.devices.map(d=>`<div class="card phone"><div class="top"><b>${esc(d.name)}</b><span class="status ${d.online?"online":""}">${d.online?"ONLINE":"OFFLINE"}</span></div><div class="muted">${esc(d.platform)} ${d.deviceModel?"• "+esc(d.deviceModel):""}</div><div class="phonebox">${d.online?"Node connected":"Waiting for heartbeat"}</div><div class="muted">Battery: ${d.battery==null?"—":esc(d.battery)+"%"}</div><small class="muted">Last seen: ${d.lastSeen?esc(new Date(d.lastSeen).toLocaleString()):"—"}</small></div>`).join(""):'<div class="card empty">No devices registered.</div>';
 document.getElementById("taskDevice").innerHTML=state.devices.map(d=>`<option value="${esc(d.id)}">${esc(d.name)}</option>`).join("");
-document.getElementById("taskList").innerHTML=state.tasks.length?state.tasks.map(t=>{let d=state.devices.find(x=>x.id===t.nodeId);return`<tr><td>${esc(d?.name||t.nodeId||"Unassigned")}</td><td>${esc(t.action)}</td><td class="warn">${esc(t.status)}</td></tr>`}).join(""):'<tr><td colspan="3" class="empty">No queued tasks.</td></tr>';
+document.getElementById("taskList").innerHTML=state.tasks.length?state.tasks.map(t=>{let d=state.devices.find(x=>x.id===t.nodeId);return`<tr><td>${esc(d?.name||t.nodeId||"Unassigned")}</td><td>${esc(t.action)}</td><td class="${statusClass(t.status)}"><b>${esc(t.status)}</b></td><td>${taskResult(t)}</td></tr>`}).join(""):'<tr><td colspan="4" class="empty">No tasks.</td></tr>';
 document.getElementById("accountList").innerHTML=state.accounts.length?state.accounts.map(a=>`<tr><td>${esc(a.platform)}</td><td>${esc(a.name)}</td></tr>`).join(""):'<tr><td colspan="2" class="empty">No account labels.</td></tr>';
 }
-render();testApi();setInterval(loadNodes,30000);
+render();testApi();setInterval(async()=>{await loadNodes();await loadTasks()},5000);
 </script>
 </body>
 </html>
